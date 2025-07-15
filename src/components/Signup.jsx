@@ -1,129 +1,103 @@
-import React,{useState} from 'react'
-import authservice from '../appwrite/auth'
-import {Link,useNavigate} from 'react-router-dom'
-import {login} from '../store/authSlice'
-import {Button,Input,Logo} from './index'
-import { useDispatch } from 'react-redux'
-import { useForm } from 'react-hook-form'
+import React, { useState } from 'react';
+import authservice from '../appwrite/auth';
+import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../store/authSlice';
+import { Button, Input, Logo } from './index';
+import { useDispatch } from 'react-redux';
+import { useForm } from 'react-hook-form';
 
 function Signup() {
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const dispatch = useDispatch();
+  const { register, handleSubmit } = useForm();
 
-const navigate=useNavigate()
-const [error,setError]=useState("")
-const dispatch =useDispatch()
-const {register,handleSubmit}=useForm()
-
-
-const create=async(data)=>{
-    setError("")
+  const create = async (data) => {
+    setError('');
     try {
-       const userData=    await authservice.createAccount(data)
-
-      if(userData)
-      {
-      const user=   await authservice.getCurrentUser()
-      if(user)
-      {
-        dispatch(login(user))
-        navigate("/")
+      const userData = await authservice.createAccount(data);
+      if (userData) {
+        const user = await authservice.getCurrentUser();
+        if (user) {
+          dispatch(login(user));
+          navigate('/');
+        }
       }
-
-      }
-        
     } catch (error) {
-        setError(error.message)
-        
+      setError(error.message);
     }
-
-}
+  };
 
   return (
-    <div className='flex items-center justify-center'>
-        <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border-black/10`}>
-            
-            <div className='mb-2 flex justify-center'>
-             <span className='inline-block w-full max-w-[100px'>
-                <Logo widht='100%'/>
-             </span>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 px-4">
+      <div className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 md:p-10 border border-gray-300">
+        {/* Logo */}
+        <div className="mb-6 flex justify-center">
+          <span className="inline-block w-24">
+            <Logo width="100%" />
+          </span>
+        </div>
 
-            </div>
+        {/* Heading */}
+        <h2 className="text-center text-3xl font-bold text-gray-800 mb-2">
+          Create your Account
+        </h2>
+        <p className="text-center text-sm text-gray-600 mb-6">
+          Already have an account?{' '}
+          <Link
+            to="/login"
+            className="text-blue-600 font-medium hover:underline transition-all"
+          >
+            Log in
+          </Link>
+        </p>
 
-            <h2 className='text-center tex-2xl font-bold leading-tight'>Sign in your Account </h2>
-            
-              <p className='mt-2 text-center text-base text-black/60'>
-                          Don&apos;t have any account?&nbsp;
-                          <Link to='/signup'
-                           className='font-medium text-primary transition-all duration-200 hover:underline'>
-                            Sign in</Link>
-              
-              </p>
+        {/* Error Message */}
+        {error && (
+          <p className="text-red-600 text-center text-sm mb-4">{error}</p>
+        )}
 
-{error && <p className='text-red-600 mt-8 text-center'>{error}</p>}
+        {/* Form */}
+        <form onSubmit={handleSubmit(create)} className="space-y-6">
+          <Input
+            label="Full Name"
+            placeholder="Enter your full name"
+            {...register('name', {
+              required: true,
+            })}
+          />
 
-<form onSubmit={handleSubmit(create)}>
+          <Input
+            label="Email"
+            placeholder="Enter your email"
+            type="email"
+            {...register('email', {
+              required: true,
+              validate: {
+                matchPattern: (value) =>
+                  /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(value) ||
+                  'Email address must be a valid address',
+              },
+            })}
+          />
 
-    <div className='space-y-5'>
+          <Input
+            label="Password"
+            type="password"
+            placeholder="Enter your password"
+            {...register('password', { required: true })}
+          />
 
-<Input label="Full Name:" 
-placeholder="enter your full name"
-{...register("name",{
-    required:true,
-})}
-/>
-
+          <Button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition-colors duration-300"
+          >
+            Create Account
+          </Button>
+        </form>
+      </div>
     </div>
-
-
-<div className='space-y-5'>
-    
-    <Input
-    label="Email:"
-    placeholder="Enter your Email"
-    type="Email"
- {...register("email",{required:true,
-validate:{matchPatern:(value)=>/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(value)
-  || "Email address must be a valid address" ,
-
-
-
-}})}
- />
-    
-    </div> 
-
-
-
-<div className='space-y-5'>
-
-<Input 
-
-label="password:"
-type="password"
-placeholder="enter your password"
-{...register ("password",{required:true})}
-
-
-
-/>
-
-
-  <Button type="submit" className="w-full">
-                            Create Account
-                        </Button>
-</div>
-
-
-</form>
-
-
-
-         </div>
-        
-      
-        
-        
-        Signup</div>
-  )
+  );
 }
 
-export default Signup
+export default Signup;

@@ -245,6 +245,11 @@ async deleteFile(fileid){
    
 }
 
+getFileView(fileId) {
+  return this.bucket.getFileView(conf.appwritebucketid, fileId);
+}
+
+
 
 
 

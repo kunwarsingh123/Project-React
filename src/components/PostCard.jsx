@@ -12,16 +12,19 @@ console.log("Preview URL:", service.getFilePreview(featuredImage));
 
 
   return (
-    <Link to={`/post/${$id}`}>
-      <div className='w-full bg-gray-100 rounded-xl p-4 hover:shadow-lg transition duration-300'>
-        <div className='w-full flex justify-center mb-4'>
+<Link to={`/post/${$id}`}>
+      <div className="w-full bg-white rounded-2xl p-4 shadow-md hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 ease-in-out border border-gray-200">
+        <div className="w-full aspect-video overflow-hidden rounded-xl mb-4">
           <img
-            src={service.getFilePreview(featuredImage)}
+            src={service.getFileView(featuredImage)}
             alt={title}
-            className='rounded-xl max-h-60 object-cover'
+            title={title}
+            className="w-full h-full object-cover rounded-xl transition-transform duration-300 hover:scale-105"
           />
         </div>
-        <h2 className='text-xl font-bold text-center truncate'>{title}</h2>
+        <h2 className="text-lg font-semibold text-center text-gray-800 truncate">
+          {title}
+        </h2>
       </div>
     </Link>
   );

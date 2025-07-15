@@ -11,7 +11,7 @@ function Postform({post}) {
   
 
 
-    const {register,handleSubmit,watch,setValue,control,getValues}=useForm({
+ const {register,handleSubmit,watch,setValue,control,getValues}=useForm({
         defaultValues:{
             title:post?.title||'',
             slug:post?.$id||'',
@@ -168,7 +168,7 @@ accept="image/png, image/jpg, image/jpeg, image/gif"
 
 {post && (
     <div className='w-full mb-4'>
-<img src={service.getFilePreview(post.featuredImage)} alt={post.title} className='rounded-lg' />
+<img src={service.getFileView(post.featuredImage)} alt={post.title} className='rounded-lg' />
 
     </div>
 )}
