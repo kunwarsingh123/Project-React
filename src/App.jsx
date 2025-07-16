@@ -35,7 +35,7 @@ useEffect(()=>{
 
 return !loading ?  (
   <>
- <div className="min-h-screen flex flex-col bg-pink-500 text-white">
+ <div className="min-h-screen flex flex-col bg-slate-500 text-white">
   <Header />
 
   <main className="flex-1 p-4">
